@@ -1,7 +1,7 @@
 import { JSX } from "solid-js/jsx-runtime";
 
 interface Props extends JSX.HTMLAttributes<HTMLInputElement> {
-	type: string
+  type: string;
 }
 
 export function Input({ type = "text", ...restProps }: Props) {
