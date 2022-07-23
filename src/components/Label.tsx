@@ -1,12 +1,16 @@
 import { Show, JSXElement } from "solid-js";
 
-interface Props {
+export interface LabelProps {
   children: JSXElement;
   required?: boolean;
   for: HTMLLabelElement["htmlFor"];
 }
 
-export function Label({ children, required = false, for: htmlFor }: Props) {
+export function Label({
+  children,
+  required = false,
+  for: htmlFor,
+}: LabelProps) {
   return (
     <label for={htmlFor} class="block text-sm font-medium text-slate-700">
       {children}
