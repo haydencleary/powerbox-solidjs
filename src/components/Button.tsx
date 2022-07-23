@@ -1,7 +1,7 @@
 import { JSX } from "solid-js";
 
 interface Props extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant: "primary" | "secondary";
+  variant?: "primary" | "secondary";
 }
 
 const variants = {
