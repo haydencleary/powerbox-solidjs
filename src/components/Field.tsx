@@ -3,7 +3,7 @@ import { JSX } from "solid-js/jsx-runtime";
 import { Label } from "./Label";
 import type { LabelProps } from "./Label";
 
-interface Props extends LabelProps {
+interface Props extends Omit<LabelProps, "for"> {
   label: JSX.Element;
   id: LabelProps["for"];
 }
