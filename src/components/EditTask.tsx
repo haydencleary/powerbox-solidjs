@@ -10,6 +10,12 @@ import { createTask, updateTask, tasks } from "../stores/taskStore";
 import type { Task } from "../types/task";
 import { TASK_STATUS_DONE } from "../types/task";
 
+import { tooltip as tooltipDirective } from "../directives/tooltip";
+
+// This is used below as `use:tooltip`, having to reassign is weird though.
+// https://github.com/solidjs/solid/discussions/845
+const tooltip = tooltipDirective;
+
 const INITIAL_TASK: Task = {
   id: "",
   title: "",
@@ -115,9 +121,7 @@ export function EditTask(props: Props) {
             <span
               class="inline-flex text-slate-400 hover:text-slate-500 ml-2 rounded-full"
               tabindex="0"
-              // use:tooltip={{
-              // 	content: 'The most important task to complete. Only one allowed at a time.'
-              // }}
+              use:tooltip="The most important task to complete. Only one allowed at a time."
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
