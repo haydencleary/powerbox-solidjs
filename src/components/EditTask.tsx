@@ -40,23 +40,21 @@ export function EditTask(props: Props) {
   const disableObt = tasks.filter((task) => task.obt).length > 0;
 
   function handleSubmit(e: Event) {
+    e.preventDefault();
+
     const formData = new FormData(e.target as HTMLFormElement);
 
     // If the `obt` checkbox isn't checked, no value is returned.
     // We also want the value to be a boolean so we have to set it manually, as inputs return strings or numbers.
-    let obt = false;
-
-    if (formData.has("obt")) {
-      obt = true;
-    }
+    const obt = formData.has("obt");
 
     // Need to set any here because TypeScript doesn't know how to handle formData.entries()
-    // const taskEntries = Object.fromEntries(
-    // 	[...(<any>formData).entries()].map(([name, value]) => [name, value.trim()])
-    // );
+    const taskEntries = Object.fromEntries(
+    	[...(formData).entries()].map(([name, value]) => [name, value.trim()])
+    );
 
     // Override any `obt` value that may be returned in `taskEntries`.
-    const submittedTask = { ...task, ...taskEntries, obt };
+    const submittedTask = { ...task(), ...taskEntries, obt } as Task;
 
     if (submittedTask.id) {
       updateTask(submittedTask);
@@ -87,7 +85,7 @@ export function EditTask(props: Props) {
               value={task().title}
               required
               autofocus
-              pattern=".*\S+.*"
+              // pattern=".*\S+.*"
             />
           </Field>
 
