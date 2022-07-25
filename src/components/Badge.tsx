@@ -12,12 +12,14 @@ interface Props extends JSX.HTMLAttributes<HTMLSpanElement> {
   variant?: typeof BADGE_VARIANT_DONE | typeof BADGE_VARIANT_TODO;
 }
 
-export function Badge({ children, variant = BADGE_VARIANT_TODO }: Props) {
+export function Badge(props: Props) {
+  const variant = () => props.variant || BADGE_VARIANT_TODO;
+
   return (
     <span
-      class={`inline-flex items-center px-2.5 py-0.5 rounded text-sm font-medium ${variants[variant]}`}
+      class={`inline-flex items-center px-2.5 py-0.5 rounded text-sm font-medium ${variants[variant()]}`}
     >
-      {children}
+      {props.children}
     </span>
   );
 }
