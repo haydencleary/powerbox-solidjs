@@ -1,13 +1,12 @@
-import { createSignal } from "solid-js";
+import { createSignal, Show, batch } from "solid-js";
+
+import { tasks, deleteTask } from "./stores/taskStore";
 
 import { Layout } from "./components/Layout";
-
-// import { tasks, deleteTask } from '$stores/taskStore';
-
 import { Button } from "./components/Button";
-// import EditTask from '$components/EditTask.svelte';
+import { EditTask } from "./components/EditTask";
 // import Graph from '$components/Graph.svelte';
-// import ViewTask from '$components/ViewTask.svelte';
+import { ViewTask } from "./components/ViewTask";
 
 const TAB_TASKS = "tasks";
 const TAB_GRAPH = "graph";
@@ -24,8 +23,75 @@ export function App() {
   }
 
   function handleNewTask() {
-    setNewTask(true);
-    setEditing(null);
+    batch(() => {
+      setNewTask(true);
+      setEditing(null);
+    });
+  }
+
+  function renderTasks() {
+    if (tasks.length) {
+      // ! Can't use <For> here, otherwise rerender won't trigger when `editing()` changes
+      return tasks.map((task) => {
+        if (task.id === editing()) {
+          return (
+            <EditTask
+              task={task}
+              onCancel={() => {
+                setEditing(null);
+              }}
+            />
+          );
+        } else {
+          return (
+            <ViewTask
+              task={task}
+              onEdit={(id) => {
+                batch(() => {
+                  setEditing(id);
+                  setNewTask(false);
+                });
+              }}
+              onDelete={deleteTask}
+            />
+          );
+        }
+      })
+    }
+
+    if (!newTask()) {
+      return (
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 py-6">
+          <button
+            type="button"
+            class="relative block w-full border-2 border-slate-300 border-dashed rounded p-12 text-center hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            onClick={() => {
+              setNewTask(true);
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="mx-auto h-12 w-12 text-slate-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            <span class="mt-2 block text-sm font-medium text-slate-900">
+              Create a new task
+            </span>
+          </button>
+        </div>
+      );
+    }
+
+    return null;
   }
 
   return (
@@ -77,65 +143,15 @@ export function App() {
                 </div>
               </div>
               <div class="flex-1 min-h-0 overflow-y-auto overflow-x-hidden scroll-smooth">
-                {/* {#if $tasks.length}
-						{#each $tasks as task (task.id)}
-							{#if task.id === editing}
-								<EditTask
-									{task}
-									on:cancel={() => {
-										editing = null;
-									}}
-								/>
-							{:else}
-								<ViewTask
-									{task}
-									on:edit={(event) => {
-										editing = event.detail;
-										newTask = false;
-									}}
-									on:delete={(event) => {
-										deleteTask(event.detail);
-									}}
-								/>
-							{/if}
-						{/each}
-					{:else if !newTask}
-						<div class="max-w-3xl mx-auto px-4 sm:px-6 py-6">
-							<button
-								type="button"
-								class="relative block w-full border-2 border-slate-300 border-dashed rounded p-12 text-center hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-								onClick={() => {
-									newTask = true;
-								}}
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									class="mx-auto h-12 w-12 text-slate-400"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-									stroke-width="1"
-								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-									/>
-								</svg>
-								<span class="mt-2 block text-sm font-medium text-slate-900">
-									Create a new task
-								</span>
-							</button>
-						</div>
-					{/if} */}
-
-                {/* {#if newTask}
-						<EditTask
-							on:cancel={() => {
-								newTask = false;
-							}}
-						/>
-					{/if} */}
+                {renderTasks()}
+                
+                <Show when={newTask()}>
+                  <EditTask
+                    onCancel={() => {
+                      setNewTask(false);
+                    }}
+                  />
+                </Show>
               </div>
             </div>
 
