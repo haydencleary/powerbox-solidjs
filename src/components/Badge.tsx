@@ -17,7 +17,9 @@ export function Badge(props: Props) {
 
   return (
     <span
-      class={`inline-flex items-center px-2.5 py-0.5 rounded text-sm font-medium ${variants[variant()]}`}
+      class={`inline-flex items-center px-2.5 py-0.5 rounded text-sm font-medium ${
+        variants[variant()]
+      }`}
     >
       {props.children}
     </span>

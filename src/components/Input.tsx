@@ -1,4 +1,4 @@
-import {splitProps} from "solid-js"
+import { splitProps } from "solid-js";
 import { JSX } from "solid-js/jsx-runtime";
 
 interface Props extends JSX.HTMLAttributes<HTMLInputElement> {
@@ -6,7 +6,7 @@ interface Props extends JSX.HTMLAttributes<HTMLInputElement> {
 }
 
 export function Input(props: Props) {
-  const [local, inputProps] = splitProps(props, ['type']);
+  const [local, inputProps] = splitProps(props, ["type"]);
   const type = () => local.type || "text";
 
   return (
