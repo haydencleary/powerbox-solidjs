@@ -8,13 +8,15 @@ interface Props extends Omit<LabelProps, "for"> {
   id: LabelProps["for"];
 }
 
-export function Field({ children, id, required = false, label }: Props) {
+export function Field(props: Props) {
+  const required = () => props.required || false;
+
   return (
     <div>
-      <Label for={id} required={required}>
-        {label}
+      <Label for={props.id} required={required()}>
+        {props.label}
       </Label>
-      <div class="mt-1">{children}</div>
+      <div class="mt-1">{props.children}</div>
     </div>
   );
 }
