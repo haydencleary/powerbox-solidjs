@@ -10,6 +10,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.2",
     "autoprefixer": "^10.4.7",
     "postcss": "^8.4.14",
     "prettier": "2.7.1",
