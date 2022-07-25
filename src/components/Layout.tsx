@@ -5,7 +5,7 @@ interface Props {
   children: JSXElement;
 }
 
-export function Layout({ children }: Props) {
+export function Layout(props: Props) {
   const [showMenu, setShowMenu] = createSignal(false);
 
   function toggleMenu() {
@@ -283,7 +283,7 @@ export function Layout({ children }: Props) {
           </div>
         </div>
 
-        {children}
+        {props.children}
       </div>
     </div>
   );
