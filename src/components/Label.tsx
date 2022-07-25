@@ -6,15 +6,13 @@ export interface LabelProps {
   for: HTMLLabelElement["htmlFor"];
 }
 
-export function Label({
-  children,
-  required = false,
-  for: htmlFor,
-}: LabelProps) {
+export function Label(props: LabelProps) {
+  const required = () => props.required || false;
+
   return (
-    <label for={htmlFor} class="block text-sm font-medium text-slate-700">
-      {children}
-      <Show when={required}>
+    <label for={props.for} class="block text-sm font-medium text-slate-700">
+      {props.children}
+      <Show when={required()}>
         <span class="text-blue-500">*</span>
       </Show>
     </label>
